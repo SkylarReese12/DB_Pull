@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QuestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Competition">
+          <Key>
+            <PropertyRef Name="COMPETITION_ID" />
+          </Key>
+          <Property Name="COMPETITION_ID" Type="smallint" Nullable="false" />
+          <Property Name="COMPETITION_NAME" Type="varchar" MaxLength="255" />
+          <Property Name="ABBR" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CATEGORY" Type="varchar" MaxLength="20" />
+          <Property Name="LOWEST_GRADE" Type="varchar" MaxLength="5" />
+          <Property Name="HIGHEST_GRADE" Type="varchar" MaxLength="5" />
+          <Property Name="TYPE" Type="varchar" MaxLength="20" />
+          <Property Name="ALLOW_ALTERNATE" Type="char" MaxLength="1" />
+          <Property Name="ALLOW_COACH" Type="char" MaxLength="1" />
+          <Property Name="CANDIDATE_NUMBER" Type="tinyint" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="CompetitionLevel">
+          <Key>
+            <PropertyRef Name="LEVEL_ID" />
+          </Key>
+          <Property Name="LEVEL_ID" Type="smallint" Nullable="false" />
+          <Property Name="LEVEL_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="LOWEST_GRADE" Type="varchar" MaxLength="5" />
+          <Property Name="HIGHEST_GRADE" Type="varchar" MaxLength="5" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="ComputerProgram">
+          <Key>
+            <PropertyRef Name="PROGRAM_ID" />
+          </Key>
+          <Property Name="PROGRAM_ID" Type="smallint" Nullable="false" />
+          <Property Name="PROGRAM_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="PROGRAM_ABBR" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="LiabilityForm">
+          <Key>
+            <PropertyRef Name="STUDENT_ID" />
+          </Key>
+          <Property Name="STUDENT_ID" Type="bigint" Nullable="false" />
+          <Property Name="SUBMITTED" Type="bit" />
+          <Property Name="FORM" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="SCHOOL_ID" />
+          </Key>
+          <Property Name="SCHOOL_ID" Type="smallint" Nullable="false" />
+          <Property Name="SCHOOLLIST_ID" Type="smallint" />
+          <Property Name="FIRST_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LAST_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CONTACT_PERSON" Type="varchar" MaxLength="100" />
+          <Property Name="PHONE" Type="varchar" MaxLength="10" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="150" />
+          <Property Name="STREET" Type="varchar" MaxLength="150" />
+          <Property Name="CITY" Type="varchar" MaxLength="50" />
+          <Property Name="ZIP" Type="varchar" MaxLength="10" />
+          <Property Name="USERNAME" Type="varchar" MaxLength="50" />
+          <Property Name="PASSWORD" Type="varchar" MaxLength="50" />
+          <Property Name="INVOICE" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="PAYMENT" Type="varchar" MaxLength="10" />
+          <Property Name="CREATE_DATE" Type="datetime" />
+          <Property Name="YEAR" Type="char" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="SchoolList">
+          <Key>
+            <PropertyRef Name="SCHOOLLIST_ID" />
+          </Key>
+          <Property Name="SCHOOLLIST_ID" Type="smallint" Nullable="false" />
+          <Property Name="SCHOOL_NAME" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="COUNTY_ID" Type="smallint" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="STUDENT_ID" />
+          </Key>
+          <Property Name="STUDENT_ID" Type="bigint" Nullable="false" />
+          <Property Name="SCHOOL_ID" Type="smallint" />
+          <Property Name="COMPETITION_ID" Type="smallint" />
+          <Property Name="FIRST_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="COACH" Type="varchar" MaxLength="100" />
+          <Property Name="TYPE" Type="varchar" MaxLength="50" />
+          <Property Name="TSHIRT_SIZE" Type="varchar" MaxLength="10" />
+          <Property Name="GRADE" Type="varchar" MaxLength="5" />
+          <Property Name="LEVEL_ID" Type="smallint" />
+          <Property Name="COMPUTERPROGRAM_ID" Type="smallint" />
+          <Property Name="FINAL" Type="char" MaxLength="1" />
+          <Property Name="AWARD" Type="char" MaxLength="1" />
+          <Property Name="CREATE_DATE" Type="datetime" />
+          <Property Name="YEAR" Type="char" MaxLength="4" />
+          <Property Name="COACHEMAIL" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__Liability__STUDE__75A278F5">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="LiabilityForm" Type="Self.LiabilityForm" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="STUDENT_ID" />
+            </Principal>
+            <Dependent Role="LiabilityForm">
+              <PropertyRef Name="STUDENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__School__SCHOOLLI__693CA210">
+          <End Role="SchoolList" Type="Self.SchoolList" Multiplicity="0..1" />
+          <End Role="School" Type="Self.School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolList">
+              <PropertyRef Name="SCHOOLLIST_ID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="SCHOOLLIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__COMPETI__70DDC3D8">
+          <End Role="Competition" Type="Self.Competition" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Competition">
+              <PropertyRef Name="COMPETITION_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="COMPETITION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__COMPUTE__72C60C4A">
+          <End Role="ComputerProgram" Type="Self.ComputerProgram" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComputerProgram">
+              <PropertyRef Name="PROGRAM_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="COMPUTERPROGRAM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__LEVEL_I__71D1E811">
+          <End Role="CompetitionLevel" Type="Self.CompetitionLevel" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionLevel">
+              <PropertyRef Name="LEVEL_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="LEVEL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__SCHOOL___6FE99F9F">
+          <End Role="School" Type="Self.School" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SCHOOL_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="SCHOOL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuestModelStoreContainer">
+          <EntitySet Name="Competition" EntityType="Self.Competition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompetitionLevel" EntityType="Self.CompetitionLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComputerProgram" EntityType="Self.ComputerProgram" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LiabilityForm" EntityType="Self.LiabilityForm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="School" EntityType="Self.School" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SchoolList" EntityType="Self.SchoolList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Liability__STUDE__75A278F5" Association="Self.FK__Liability__STUDE__75A278F5">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="LiabilityForm" EntitySet="LiabilityForm" />
+          </AssociationSet>
+          <AssociationSet Name="FK__School__SCHOOLLI__693CA210" Association="Self.FK__School__SCHOOLLI__693CA210">
+            <End Role="SchoolList" EntitySet="SchoolList" />
+            <End Role="School" EntitySet="School" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__COMPETI__70DDC3D8" Association="Self.FK__Student__COMPETI__70DDC3D8">
+            <End Role="Competition" EntitySet="Competition" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__COMPUTE__72C60C4A" Association="Self.FK__Student__COMPUTE__72C60C4A">
+            <End Role="ComputerProgram" EntitySet="ComputerProgram" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__LEVEL_I__71D1E811" Association="Self.FK__Student__LEVEL_I__71D1E811">
+            <End Role="CompetitionLevel" EntitySet="CompetitionLevel" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__SCHOOL___6FE99F9F" Association="Self.FK__Student__SCHOOL___6FE99F9F">
+            <End Role="School" EntitySet="School" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Competition">
+          <Key>
+            <PropertyRef Name="COMPETITION_ID" />
+          </Key>
+          <Property Name="COMPETITION_ID" Type="Int16" Nullable="false" />
+          <Property Name="COMPETITION_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ABBR" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CATEGORY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LOWEST_GRADE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="HIGHEST_GRADE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ALLOW_ALTERNATE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ALLOW_COACH" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CANDIDATE_NUMBER" Type="Byte" />
+          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__COMPETI__70DDC3D8" FromRole="Competition" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="CompetitionLevel">
+          <Key>
+            <PropertyRef Name="LEVEL_ID" />
+          </Key>
+          <Property Name="LEVEL_ID" Type="Int16" Nullable="false" />
+          <Property Name="LEVEL_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOWEST_GRADE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="HIGHEST_GRADE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__LEVEL_I__71D1E811" FromRole="CompetitionLevel" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="ComputerProgram">
+          <Key>
+            <PropertyRef Name="PROGRAM_ID" />
+          </Key>
+          <Property Name="PROGRAM_ID" Type="Int16" Nullable="false" />
+          <Property Name="PROGRAM_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PROGRAM_ABBR" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__COMPUTE__72C60C4A" FromRole="ComputerProgram" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="LiabilityForm">
+          <Key>
+            <PropertyRef Name="STUDENT_ID" />
+          </Key>
+          <Property Name="STUDENT_ID" Type="Int64" Nullable="false" />
+          <Property Name="SUBMITTED" Type="Boolean" />
+          <Property Name="FORM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__Liability__STUDE__75A278F5" FromRole="LiabilityForm" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="SCHOOL_ID" />
+          </Key>
+          <Property Name="SCHOOL_ID" Type="Int16" Nullable="false" />
+          <Property Name="SCHOOLLIST_ID" Type="Int16" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CONTACT_PERSON" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PHONE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="STREET" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ZIP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="USERNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="PAYMENT" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="YEAR" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="SchoolList" Relationship="Self.FK__School__SCHOOLLI__693CA210" FromRole="School" ToRole="SchoolList" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__SCHOOL___6FE99F9F" FromRole="School" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="SchoolList">
+          <Key>
+            <PropertyRef Name="SCHOOLLIST_ID" />
+          </Key>
+          <Property Name="SCHOOLLIST_ID" Type="Int16" Nullable="false" />
+          <Property Name="SCHOOL_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COUNTY_ID" Type="Int16" />
+          <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Schools" Relationship="Self.FK__School__SCHOOLLI__693CA210" FromRole="SchoolList" ToRole="School" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="STUDENT_ID" />
+          </Key>
+          <Property Name="STUDENT_ID" Type="Int64" Nullable="false" />
+          <Property Name="SCHOOL_ID" Type="Int16" />
+          <Property Name="COMPETITION_ID" Type="Int16" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="COACH" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TSHIRT_SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="GRADE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="LEVEL_ID" Type="Int16" />
+          <Property Name="COMPUTERPROGRAM_ID" Type="Int16" />
+          <Property Name="FINAL" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="AWARD" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="YEAR" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="COACHEMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Competition" Relationship="Self.FK__Student__COMPETI__70DDC3D8" FromRole="Student" ToRole="Competition" />
+          <NavigationProperty Name="CompetitionLevel" Relationship="Self.FK__Student__LEVEL_I__71D1E811" FromRole="Student" ToRole="CompetitionLevel" />
+          <NavigationProperty Name="ComputerProgram" Relationship="Self.FK__Student__COMPUTE__72C60C4A" FromRole="Student" ToRole="ComputerProgram" />
+          <NavigationProperty Name="LiabilityForm" Relationship="Self.FK__Liability__STUDE__75A278F5" FromRole="Student" ToRole="LiabilityForm" />
+          <NavigationProperty Name="School" Relationship="Self.FK__Student__SCHOOL___6FE99F9F" FromRole="Student" ToRole="School" />
+        </EntityType>
+        <Association Name="FK__Student__COMPETI__70DDC3D8">
+          <End Role="Competition" Type="Self.Competition" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Competition">
+              <PropertyRef Name="COMPETITION_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="COMPETITION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__LEVEL_I__71D1E811">
+          <End Role="CompetitionLevel" Type="Self.CompetitionLevel" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionLevel">
+              <PropertyRef Name="LEVEL_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="LEVEL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__COMPUTE__72C60C4A">
+          <End Role="ComputerProgram" Type="Self.ComputerProgram" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComputerProgram">
+              <PropertyRef Name="PROGRAM_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="COMPUTERPROGRAM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Liability__STUDE__75A278F5">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="LiabilityForm" Type="Self.LiabilityForm" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="STUDENT_ID" />
+            </Principal>
+            <Dependent Role="LiabilityForm">
+              <PropertyRef Name="STUDENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__School__SCHOOLLI__693CA210">
+          <End Role="SchoolList" Type="Self.SchoolList" Multiplicity="0..1" />
+          <End Role="School" Type="Self.School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolList">
+              <PropertyRef Name="SCHOOLLIST_ID" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="SCHOOLLIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__SCHOOL___6FE99F9F">
+          <End Role="School" Type="Self.School" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SCHOOL_ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="SCHOOL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Competitions" EntityType="Self.Competition" />
+          <EntitySet Name="CompetitionLevels" EntityType="Self.CompetitionLevel" />
+          <EntitySet Name="ComputerPrograms" EntityType="Self.ComputerProgram" />
+          <EntitySet Name="LiabilityForms" EntityType="Self.LiabilityForm" />
+          <EntitySet Name="Schools" EntityType="Self.School" />
+          <EntitySet Name="SchoolLists" EntityType="Self.SchoolList" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <AssociationSet Name="FK__Student__COMPETI__70DDC3D8" Association="Self.FK__Student__COMPETI__70DDC3D8">
+            <End Role="Competition" EntitySet="Competitions" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__LEVEL_I__71D1E811" Association="Self.FK__Student__LEVEL_I__71D1E811">
+            <End Role="CompetitionLevel" EntitySet="CompetitionLevels" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__COMPUTE__72C60C4A" Association="Self.FK__Student__COMPUTE__72C60C4A">
+            <End Role="ComputerProgram" EntitySet="ComputerPrograms" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Liability__STUDE__75A278F5" Association="Self.FK__Liability__STUDE__75A278F5">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="LiabilityForm" EntitySet="LiabilityForms" />
+          </AssociationSet>
+          <AssociationSet Name="FK__School__SCHOOLLI__693CA210" Association="Self.FK__School__SCHOOLLI__693CA210">
+            <End Role="SchoolList" EntitySet="SchoolLists" />
+            <End Role="School" EntitySet="Schools" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__SCHOOL___6FE99F9F" Association="Self.FK__Student__SCHOOL___6FE99F9F">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuestModelStoreContainer" CdmEntityContainer="QuestEntities">
+          <EntitySetMapping Name="Competitions">
+            <EntityTypeMapping TypeName="QuestModel.Competition">
+              <MappingFragment StoreEntitySet="Competition">
+                <ScalarProperty Name="COMPETITION_ID" ColumnName="COMPETITION_ID" />
+                <ScalarProperty Name="COMPETITION_NAME" ColumnName="COMPETITION_NAME" />
+                <ScalarProperty Name="ABBR" ColumnName="ABBR" />
+                <ScalarProperty Name="CATEGORY" ColumnName="CATEGORY" />
+                <ScalarProperty Name="LOWEST_GRADE" ColumnName="LOWEST_GRADE" />
+                <ScalarProperty Name="HIGHEST_GRADE" ColumnName="HIGHEST_GRADE" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="ALLOW_ALTERNATE" ColumnName="ALLOW_ALTERNATE" />
+                <ScalarProperty Name="ALLOW_COACH" ColumnName="ALLOW_COACH" />
+                <ScalarProperty Name="CANDIDATE_NUMBER" ColumnName="CANDIDATE_NUMBER" />
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompetitionLevels">
+            <EntityTypeMapping TypeName="QuestModel.CompetitionLevel">
+              <MappingFragment StoreEntitySet="CompetitionLevel">
+                <ScalarProperty Name="LEVEL_ID" ColumnName="LEVEL_ID" />
+                <ScalarProperty Name="LEVEL_NAME" ColumnName="LEVEL_NAME" />
+                <ScalarProperty Name="LOWEST_GRADE" ColumnName="LOWEST_GRADE" />
+                <ScalarProperty Name="HIGHEST_GRADE" ColumnName="HIGHEST_GRADE" />
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComputerPrograms">
+            <EntityTypeMapping TypeName="QuestModel.ComputerProgram">
+              <MappingFragment StoreEntitySet="ComputerProgram">
+                <ScalarProperty Name="PROGRAM_ID" ColumnName="PROGRAM_ID" />
+                <ScalarProperty Name="PROGRAM_NAME" ColumnName="PROGRAM_NAME" />
+                <ScalarProperty Name="PROGRAM_ABBR" ColumnName="PROGRAM_ABBR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LiabilityForms">
+            <EntityTypeMapping TypeName="QuestModel.LiabilityForm">
+              <MappingFragment StoreEntitySet="LiabilityForm">
+                <ScalarProperty Name="STUDENT_ID" ColumnName="STUDENT_ID" />
+                <ScalarProperty Name="SUBMITTED" ColumnName="SUBMITTED" />
+                <ScalarProperty Name="FORM" ColumnName="FORM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="QuestModel.School">
+              <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="SCHOOL_ID" ColumnName="SCHOOL_ID" />
+                <ScalarProperty Name="SCHOOLLIST_ID" ColumnName="SCHOOLLIST_ID" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="CONTACT_PERSON" ColumnName="CONTACT_PERSON" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="STREET" ColumnName="STREET" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="INVOICE" ColumnName="INVOICE" />
+                <ScalarProperty Name="PAYMENT" ColumnName="PAYMENT" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolLists">
+            <EntityTypeMapping TypeName="QuestModel.SchoolList">
+              <MappingFragment StoreEntitySet="SchoolList">
+                <ScalarProperty Name="SCHOOLLIST_ID" ColumnName="SCHOOLLIST_ID" />
+                <ScalarProperty Name="SCHOOL_NAME" ColumnName="SCHOOL_NAME" />
+                <ScalarProperty Name="COUNTY_ID" ColumnName="COUNTY_ID" />
+                <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="QuestModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="STUDENT_ID" ColumnName="STUDENT_ID" />
+                <ScalarProperty Name="SCHOOL_ID" ColumnName="SCHOOL_ID" />
+                <ScalarProperty Name="COMPETITION_ID" ColumnName="COMPETITION_ID" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="COACH" ColumnName="COACH" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="TSHIRT_SIZE" ColumnName="TSHIRT_SIZE" />
+                <ScalarProperty Name="GRADE" ColumnName="GRADE" />
+                <ScalarProperty Name="LEVEL_ID" ColumnName="LEVEL_ID" />
+                <ScalarProperty Name="COMPUTERPROGRAM_ID" ColumnName="COMPUTERPROGRAM_ID" />
+                <ScalarProperty Name="FINAL" ColumnName="FINAL" />
+                <ScalarProperty Name="AWARD" ColumnName="AWARD" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="COACHEMAIL" ColumnName="COACHEMAIL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
